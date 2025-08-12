@@ -15,15 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views as main_views
+from django.contrib.auth import views as auth_views
+from . import views as main_views
+
 
 # Import the views.py file from the current directory.
 # We're using 'as main_views' to avoid any name conflicts.
 from . import views as main_views
 
 urlpatterns = [
-    # This line tells Django that the root URL ('') should be handled by the 'home' view
-    # from the main project's views.py file.
     path('', main_views.home, name='home'),
     path('admin/', admin.site.urls),
     path('tickets/', include('tickets.urls')),
-]
+    # Auth URLs (main app only)
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/register/', main_views.register, name='register'),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
+    path('accounts/profile/', main_views.profile, name='profile'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+]   

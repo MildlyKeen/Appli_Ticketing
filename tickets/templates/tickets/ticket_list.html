@@ -1,0 +1,14 @@
+{% extends "appli_ticketing/base.html" %}
+
+{% block title %}Liste des Tickets{% endblock %}
+
+{% block content %}
+    <h1>Liste des Tickets</h1>
+    <ul>
+        {% for ticket in tickets %}
+            <li>{{ ticket.title }}</li>
+        {% empty %}
+            <li>Aucun ticket trouvé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
