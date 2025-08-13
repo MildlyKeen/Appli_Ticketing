@@ -45,12 +45,12 @@ def ticket_edit(request, pk):
     """
     ticket = get_object_or_404(Ticket, pk=pk)
     if request.method == 'POST':
-        form = TicketForm(request.POST, instance=ticket)
+        form = TicketForm(request.POST, instance=ticket, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('tickets:ticket_detail', pk=ticket.pk)
     else:
-        form = TicketForm(instance=ticket)
+        form = TicketForm(instance=ticket, user=request.user)
     return render(request, 'tickets/ticket_form.html', {'form': form, 'edit': True})
 
 @login_required
@@ -87,7 +87,7 @@ def ticket_assign(request, pk):
         form = TicketAssignForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()  # Save the assignment and status change
-            return redirect('ticket_detail', pk=ticket.pk)  # Redirect to ticket detail
+            return redirect('tickets:ticket_detail', pk=ticket.pk)  # Redirect to ticket detail
     else:
         form = TicketAssignForm(instance=ticket)  # Pre-fill form with current data
     return render(request, 'tickets/ticket_assign.html', {'form': form, 'ticket': ticket})
@@ -99,7 +99,7 @@ def ticket_list(request):
 @login_required
 def ticket_create(request):
     if request.method == 'POST':
-        form = TicketForm(request.POST)
+        form = TicketForm(request.POST, user=request.user)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_by = request.user
@@ -109,10 +109,11 @@ def ticket_create(request):
             # Form is invalid, show errors
             return render(request, 'tickets/ticket_form.html', {'form': form, 'edit': False})
     else:
-        form = TicketForm()
+        form = TicketForm(user=request.user)
     return render(request, 'tickets/ticket_form.html', {'form': form, 'edit': False})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def group_create(request):
     if request.method == 'POST':
         form = GroupForm(request.POST)

@@ -15,6 +15,7 @@
       <th>Groupe</th>
       <th>Priorité</th>
       <th>Status</th>
+      <th>Assigné à</th>
       <th>Créé par</th>
       <th>Actions</th>
     </tr>
@@ -26,6 +27,7 @@
         <td>{% if ticket.group %}<span class="badge bg-info">{{ ticket.group.name }}</span>{% else %}<span class="text-muted">Aucun</span>{% endif %}</td>
         <td><span class="badge bg-warning">{{ ticket.priority }}</span></td>
         <td><span class="badge bg-info">{{ ticket.status }}</span></td>
+        <td>{% if ticket.assigned_to %}<span class="badge bg-success">{{ ticket.assigned_to.username }}</span>{% else %}<span class="text-muted">Non assigné</span>{% endif %}</td>
         <td>{{ ticket.created_by.username }}</td>
         <td>
           {% if user == ticket.created_by or user.is_superuser %}
@@ -38,7 +40,7 @@
         </td>
       </tr>
     {% empty %}
-      <tr><td colspan="6" class="text-center">Aucun ticket trouvé.</td></tr>
+      <tr><td colspan="7" class="text-center">Aucun ticket trouvé.</td></tr>
     {% endfor %}
   </tbody>
 </table>
