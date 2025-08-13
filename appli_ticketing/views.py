@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from tickets.models import Ticket
 from .forms import CustomUserCreationForm
 
+@login_required
 def home(request):
     # Render the home.html template, which extends base.html and includes navigation
     return render(request, 'appli_ticketing/home.html')

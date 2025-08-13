@@ -3,7 +3,12 @@
 {% block title %}Accueil - IT Ticketing System{% endblock %}
 
 {% block content %}
-    <h1>Bienvenue dans le système de gestion des tickets informatiques</h1>
-    <p>Cette plateforme vous permet de signaler et de suivre les incidents et les demandes informatiques. Accédez à la liste des tickets ou connectez-vous au tableau de bord pour gérer les interventions.</p>
-    <a href="/tickets/" class="button-link">Voir les Tickets</a>
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold mb-4">Bienvenue dans le système de gestion des tickets informatiques</h1>
+    <p class="lead mb-4">Cette plateforme vous permet de signaler et de suivre les incidents et les demandes informatiques.<br>Accédez à la liste des tickets ou connectez-vous au tableau de bord pour gérer les interventions.</p>
+    <a href="/tickets/" class="btn btn-primary btn-lg me-2">Voir les Tickets</a>
+    {% if not user.is_authenticated %}
+      <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">Connexion</a>
+    {% endif %}
+</div>
 {% endblock %}
