@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 # This list contains all the URL patterns for the 'tickets' app.
 # The 'app_name' is used for namespacing and is a secure practice
@@ -11,4 +12,11 @@ urlpatterns = [
     # The second argument, `views.ticket_list`, points to the function we wrote.
     # The third argument, `name='ticket_list'`, gives this URL a name for easy reference in templates.
     path('', views.ticket_list, name='ticket_list'),
+    path('create/', views.ticket_create, name='ticket_create'),
+    path('<int:pk>/', views.ticket_detail, name='ticket_detail'),  # Detail view
+    path('<int:pk>/edit/', views.ticket_edit, name='ticket_edit'), # Edit view
+    path('<int:pk>/delete/', views.ticket_delete, name='ticket_delete'),
+    path('<int:pk>/assign/', views.ticket_assign, name='ticket_assign'),  # Assignment URL
+
+
 ]

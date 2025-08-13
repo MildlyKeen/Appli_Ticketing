@@ -1,0 +1,36 @@
+{% extends 'appli_ticketing/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2 class="mb-4">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h2>
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">{% if edit %}Enregistrer{% else %}Envoyer{% endif %}</button>
+      <a href="{% url 'ticket_list' %}" class="btn btn-secondary ms-2">Retour à la liste</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
