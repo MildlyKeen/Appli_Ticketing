@@ -1,0 +1,64 @@
+{% extends 'appli_ticketing/base.html' %}
+{% block title %}Assigner / Changer le statut du Ticket{% endblock %}
+{% block content %}
+<div class="card shadow-lg mb-4">
+  <div class="card-header bg-success text-white">
+    <h3 class="mb-0">Assigner ou changer le statut du ticket</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered mb-4">
+      <tbody>
+        <tr>
+          <th scope="row">Titre</th>
+          <td>{{ ticket.title }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Description</th>
+          <td>{{ ticket.description }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Priorité</th>
+          <td><span class="badge bg-warning">{{ ticket.get_priority_display }}</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Status</th>
+          <td><span class="badge bg-info">{{ ticket.get_status_display }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <table class="table table-borderless">
+        <tbody>
+          {% for field in form %}
+            <tr>
+              <th class="align-middle" style="width: 30%;">{{ field.label }}</th>
+              <td>{{ field }}</td>
+            </tr>
+            {% if field.help_text %}
+              <tr><td colspan="2"><small class="form-text text-muted">{{ field.help_text }}</small></td></tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit" class="btn btn-success">Enregistrer</button>
+      <a href="{% url 'tickets:ticket_detail' ticket.pk %}" class="btn btn-secondary ms-2">Retour au ticket</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

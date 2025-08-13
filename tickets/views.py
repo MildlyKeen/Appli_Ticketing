@@ -46,7 +46,7 @@ def ticket_edit(request, pk):
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
-            return redirect('ticket_detail', pk=ticket.pk)
+            return redirect('tickets:ticket_detail', pk=ticket.pk)
     else:
         form = TicketForm(instance=ticket)
     return render(request, 'tickets/ticket_form.html', {'form': form, 'edit': True})

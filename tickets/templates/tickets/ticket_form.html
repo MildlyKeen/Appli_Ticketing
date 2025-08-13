@@ -1,8 +1,12 @@
 {% extends 'appli_ticketing/base.html' %}
+{% block title %}Créer / Modifier un Ticket{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <h2 class="mb-4">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h2>
+<div class="card shadow-lg mb-4">
+  <div class="card-header bg-primary text-white">
+    <h3 class="mb-0">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h3>
+  </div>
+  <div class="card-body">
+    <hr>
     {% if form.errors %}
       <div class="alert alert-danger">
         <ul>
@@ -19,17 +23,21 @@
     {% endif %}
     <form method="post" novalidate>
       {% csrf_token %}
-      {% for field in form %}
-        <div class="mb-3">
-          <label class="form-label">{{ field.label }}</label>
-          {{ field }}
-          {% if field.help_text %}
-            <div class="form-text">{{ field.help_text }}</div>
-          {% endif %}
-        </div>
-      {% endfor %}
+      <table class="table table-borderless">
+        <tbody>
+          {% for field in form %}
+            <tr>
+              <th class="align-middle" style="width: 30%;">{{ field.label }}</th>
+              <td>{{ field }}</td>
+            </tr>
+            {% if field.help_text %}
+              <tr><td colspan="2"><small class="form-text text-muted">{{ field.help_text }}</small></td></tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
       <button type="submit" class="btn btn-primary">{% if edit %}Enregistrer{% else %}Envoyer{% endif %}</button>
-      <a href="{% url 'ticket_list' %}" class="btn btn-secondary ms-2">Retour à la liste</a>
+      <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary ms-2">Retour à la liste</a>
     </form>
   </div>
 </div>

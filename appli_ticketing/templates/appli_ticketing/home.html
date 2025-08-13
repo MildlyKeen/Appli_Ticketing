@@ -5,7 +5,27 @@
 {% block content %}
 <div class="text-center py-5">
     <h1 class="display-5 fw-bold mb-4">Bienvenue dans le système de gestion des tickets informatiques</h1>
-    <p class="lead mb-4">Cette plateforme vous permet de signaler et de suivre les incidents et les demandes informatiques.<br>Accédez à la liste des tickets ou connectez-vous au tableau de bord pour gérer les interventions.</p>
+    <hr>
+    <table class="table table-bordered w-75 mx-auto mb-4">
+      <tbody>
+        <tr>
+          <th>Fonctionnalité</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>Créer un ticket</td>
+          <td>Signalez un problème ou une demande informatique</td>
+        </tr>
+        <tr>
+          <td>Voir les tickets</td>
+          <td>Consultez et gérez tous les tickets ouverts</td>
+        </tr>
+        <tr>
+          <td>Tableau de bord</td>
+          <td>Accédez à votre profil et à vos tickets</td>
+        </tr>
+      </tbody>
+    </table>
     <a href="/tickets/" class="btn btn-primary btn-lg me-2">Voir les Tickets</a>
     {% if not user.is_authenticated %}
       <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">Connexion</a>

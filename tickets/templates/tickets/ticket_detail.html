@@ -1,0 +1,32 @@
+{% extends 'appli_ticketing/base.html' %}
+{% block title %}Détail du Ticket{% endblock %}
+{% block content %}
+<div class="card shadow-lg mb-4">
+  <div class="card-header bg-primary text-white">
+    <h3 class="mb-0">Détail du Ticket</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered mb-4">
+      <tbody>
+        <tr><th>Titre</th><td>{{ ticket.title }}</td></tr>
+        <tr><th>Description</th><td>{{ ticket.description }}</td></tr>
+        <tr><th>Priorité</th><td><span class="badge bg-warning">{{ ticket.get_priority_display }}</span></td></tr>
+        <tr><th>Status</th><td><span class="badge bg-info">{{ ticket.get_status_display }}</span></td></tr>
+        <tr><th>Créé par</th><td>{{ ticket.created_by.username }}</td></tr>
+        <tr><th>Date de création</th><td>{{ ticket.created_at }}</td></tr>
+      </tbody>
+    </table>
+    <hr>
+    <div class="mt-4">
+      {% if user == ticket.created_by or user.is_superuser %}
+        <a href="{% url 'tickets:ticket_edit' ticket.pk %}" class="btn btn-outline-primary me-2">Modifier</a>
+        <a href="{% url 'tickets:ticket_delete' ticket.pk %}" class="btn btn-outline-danger me-2">Supprimer</a>
+      {% endif %}
+      {% if user.is_staff or user.is_superuser %}
+        <a href="{% url 'tickets:ticket_assign' ticket.pk %}" class="btn btn-outline-success me-2">Assigner / Changer le statut</a>
+      {% endif %}
+      <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
