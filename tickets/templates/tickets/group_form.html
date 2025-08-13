@@ -1,15 +1,12 @@
 {% extends 'appli_ticketing/base.html' %}
-{% block title %}Créer / Modifier un Ticket{% endblock %}
+{% block title %}Créer un Groupe{% endblock %}
 {% block content %}
 <div class="card shadow-lg mb-4">
-  <div class="card-header bg-primary text-white">
-    <h3 class="mb-0">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h3>
+  <div class="card-header bg-info text-white">
+    <h3 class="mb-0">Créer un nouveau groupe</h3>
   </div>
   <div class="card-body">
     <hr>
-    <div class="mb-3">
-      <a href="{% url 'tickets:group_create' %}" class="btn btn-info">+ Créer un nouveau groupe</a>
-    </div>
     {% if form.errors %}
       <div class="alert alert-danger">
         <ul>
@@ -39,8 +36,8 @@
           {% endfor %}
         </tbody>
       </table>
-      <button type="submit" class="btn btn-primary">{% if edit %}Enregistrer{% else %}Envoyer{% endif %}</button>
-      <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary ms-2">Retour à la liste</a>
+      <button type="submit" class="btn btn-info">Créer le groupe</button>
+      <a href="{% url 'tickets:ticket_create' %}" class="btn btn-secondary ms-2">Retour à la création de ticket</a>
     </form>
   </div>
 </div>

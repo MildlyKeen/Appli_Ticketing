@@ -17,6 +17,6 @@ urlpatterns = [
     path('<int:pk>/edit/', views.ticket_edit, name='ticket_edit'), # Edit view
     path('<int:pk>/delete/', views.ticket_delete, name='ticket_delete'),
     path('<int:pk>/assign/', views.ticket_assign, name='ticket_assign'),  # Assignment URL
-
+    path('group/create/', views.group_create, name='group_create'),  # Group creation URL
 
 ]

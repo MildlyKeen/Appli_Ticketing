@@ -12,6 +12,7 @@
   <thead>
     <tr>
       <th>Titre</th>
+      <th>Groupe</th>
       <th>Priorité</th>
       <th>Status</th>
       <th>Créé par</th>
@@ -22,6 +23,7 @@
     {% for ticket in tickets %}
       <tr>
         <td><a href="{% url 'tickets:ticket_detail' ticket.pk %}" class="fw-bold text-primary">{{ ticket.title }}</a></td>
+        <td>{% if ticket.group %}<span class="badge bg-info">{{ ticket.group.name }}</span>{% else %}<span class="text-muted">Aucun</span>{% endif %}</td>
         <td><span class="badge bg-warning">{{ ticket.priority }}</span></td>
         <td><span class="badge bg-info">{{ ticket.status }}</span></td>
         <td>{{ ticket.created_by.username }}</td>
@@ -36,7 +38,7 @@
         </td>
       </tr>
     {% empty %}
-      <tr><td colspan="5" class="text-center">Aucun ticket trouvé.</td></tr>
+      <tr><td colspan="6" class="text-center">Aucun ticket trouvé.</td></tr>
     {% endfor %}
   </tbody>
 </table>

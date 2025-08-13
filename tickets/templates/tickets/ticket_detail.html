@@ -10,6 +10,7 @@
       <tbody>
         <tr><th>Titre</th><td>{{ ticket.title }}</td></tr>
         <tr><th>Description</th><td>{{ ticket.description }}</td></tr>
+        <tr><th>Groupe</th><td>{% if ticket.group %}<span class="badge bg-info">{{ ticket.group.name }}</span> <span class="text-muted">{{ ticket.group.description }}</span>{% else %}<span class="text-muted">Aucun</span>{% endif %}</td></tr>
         <tr><th>Priorité</th><td><span class="badge bg-warning">{{ ticket.get_priority_display }}</span></td></tr>
         <tr><th>Status</th><td><span class="badge bg-info">{{ ticket.get_status_display }}</span></td></tr>
         <tr><th>Créé par</th><td>{{ ticket.created_by.username }}</td></tr>

@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
 from .models import Ticket
 from .forms import TicketForm, TicketAssignForm
+from .forms_group import GroupForm
+from .models import Group
 
 def ticket_list(request):
     """
@@ -109,3 +111,14 @@ def ticket_create(request):
     else:
         form = TicketForm()
     return render(request, 'tickets/ticket_form.html', {'form': form, 'edit': False})
+
+@login_required
+def group_create(request):
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            group = form.save()
+            return redirect('tickets:ticket_create')
+    else:
+        form = GroupForm()
+    return render(request, 'tickets/group_form.html', {'form': form})

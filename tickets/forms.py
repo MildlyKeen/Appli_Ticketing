@@ -8,7 +8,7 @@ class TicketForm(forms.ModelForm):
     """
     class Meta:
         model = Ticket
-        fields = ['title', 'description', 'status', 'priority']
+        fields = ['title', 'description', 'status', 'priority', 'group']
 
 class TicketAssignForm(forms.ModelForm):
     """
@@ -17,4 +17,4 @@ class TicketAssignForm(forms.ModelForm):
     """
     class Meta:
         model = Ticket
-        fields = ['assigned_to', 'status']
+        fields = ['assigned_to', 'status', 'group']
