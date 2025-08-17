@@ -1,7 +1,6 @@
-```pip-requirements
+
 
 django>=3.2
 psycopg2-binary>=2.9
 flake8>=6.0
 # Optional: Add other packages as needed
-```
