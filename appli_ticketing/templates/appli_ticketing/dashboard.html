@@ -47,31 +47,25 @@
     // Data from Django views
     const statusData = {{ tickets_by_status|safe }};
     const priorityData = {{ tickets_by_priority|safe }};
-
-    // Placeholder data for new charts based on your requirements.
-    // Replace this with actual data from your Django views once available.
-    const typeData = [
-        { type: 'Demande', count: 15 },
-        { type: 'Incident', count: 8 }
-    ];
+    const typeData = {{ tickets_by_type|safe }};
 
     // Chart colors for a consistent look
-    const statusColors = [
-        '#0d6efd',  // Open (Blue)
-        '#ffc107',  // In Progress (Yellow)
-        '#198754',  // Closed (Green)
-    ];
+    const statusColors = {
+        'open': '#36A2EB', // Blue
+        'in_progress': '#FFCE56', // Yellow
+        'closed': '#4BC0C0', // Teal
+    };
 
     const priorityColors = {
-        'Low': '#198754',    // Low (Green)
-        'Medium': '#ffc107', // Medium (Yellow)
-        'High': '#dc3545',   // High (Red)
+        'low': '#4BC0C0',    // Low (Teal)
+        'medium': '#FFCE56', // Medium (Yellow)
+        'high': '#FF6384',   // High (Red)
     };
     
-    const typeColors = [
-        '#6c757d', // Demande (Gray)
-        '#dc3545', // Incident (Red)
-    ];
+    const typeColors = {
+        'demande': '#9966FF', // Purple
+        'incident': '#FF6384', // Red
+    };
 
     // Chart 1: Tickets by Status (Doughnut)
     new Chart(document.getElementById('statusChart'), {
@@ -80,7 +74,7 @@
             labels: statusData.map(d => d.status),
             datasets: [{
                 data: statusData.map(d => d.count),
-                backgroundColor: statusData.map((d, i) => statusColors[i % statusColors.length]),
+                backgroundColor: statusData.map(d => statusColors[d.status]),
                 borderColor: '#fff',
                 hoverBorderColor: '#fff'
             }]
