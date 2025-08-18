@@ -1,0 +1,162 @@
+{% extends 'appli_ticketing/base.html' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">Statistiques du parc informatique</h2>
+
+<div class="row">
+    <!-- Section Tickets par Statut -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="my-0"><i class="fa-solid fa-chart-pie me-2"></i> Tickets par statut</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Tickets par Priorité -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="my-0"><i class="fa-solid fa-chart-bar me-2"></i> Tickets par priorité</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="priorityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section pour d'autres graphiques (Demandes vs Incidents) -->
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="my-0"><i class="fa-solid fa-code-pull-request me-2"></i> Demandes et incidents</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="typeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data from Django views
+    const statusData = {{ tickets_by_status|safe }};
+    const priorityData = {{ tickets_by_priority|safe }};
+
+    // Placeholder data for new charts based on your requirements.
+    // Replace this with actual data from your Django views once available.
+    const typeData = [
+        { type: 'Demande', count: 15 },
+        { type: 'Incident', count: 8 }
+    ];
+
+    // Chart colors for a consistent look
+    const statusColors = [
+        '#0d6efd',  // Open (Blue)
+        '#ffc107',  // In Progress (Yellow)
+        '#198754',  // Closed (Green)
+    ];
+
+    const priorityColors = {
+        'Low': '#198754',    // Low (Green)
+        'Medium': '#ffc107', // Medium (Yellow)
+        'High': '#dc3545',   // High (Red)
+    };
+    
+    const typeColors = [
+        '#6c757d', // Demande (Gray)
+        '#dc3545', // Incident (Red)
+    ];
+
+    // Chart 1: Tickets by Status (Doughnut)
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: statusData.map(d => d.status),
+            datasets: [{
+                data: statusData.map(d => d.count),
+                backgroundColor: statusData.map((d, i) => statusColors[i % statusColors.length]),
+                borderColor: '#fff',
+                hoverBorderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Chart 2: Tickets by Priority (Bar)
+    new Chart(document.getElementById('priorityChart'), {
+        type: 'bar',
+        data: {
+            labels: priorityData.map(d => d.priority),
+            datasets: [{
+                label: 'Nombre de tickets',
+                data: priorityData.map(d => d.count),
+                backgroundColor: priorityData.map(d => priorityColors[d.priority]),
+                borderColor: priorityData.map(d => priorityColors[d.priority]),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            }
+        }
+    });
+
+    // Chart 3: Requests vs. Incidents (Bar)
+    new Chart(document.getElementById('typeChart'), {
+        type: 'bar',
+        data: {
+            labels: typeData.map(d => d.type),
+            datasets: [{
+                label: 'Nombre de tickets',
+                data: typeData.map(d => d.count),
+                backgroundColor: typeData.map(d => typeColors[d.type]),
+                borderColor: typeData.map(d => typeColors[d.type]),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

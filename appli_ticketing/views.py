@@ -4,6 +4,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from tickets.models import Ticket
 from .forms import CustomUserCreationForm
+from django.contrib.auth.views import LoginView
+from .forms import CustomLoginForm
+from django.shortcuts import render
+from django.db.models import Count
+
+class CustomLoginView(LoginView):
+    authentication_form = CustomLoginForm
+    template_name = 'registration/login.html'
+
 
 @login_required
 def home(request):
@@ -30,3 +39,22 @@ def profile(request):
     """
     user_tickets = Ticket.objects.filter(created_by=request.user)
     return render(request, 'appli_ticketing/profile.html', {'user_tickets': user_tickets})
+
+@login_required
+def dashboard(request):
+    # Nombre de tickets par statut
+    tickets_by_status = Ticket.objects.values('status').annotate(count=Count('id'))
+
+    # Tickets par priorité
+    tickets_by_priority = Ticket.objects.values('priority').annotate(count=Count('id'))
+
+    # Tickets par type (Demandes vs Incidents)
+    # Assurez-vous que votre modèle Ticket a un champ 'type'
+    tickets_by_type = Ticket.objects.values('type').annotate(count=Count('id'))
+
+    context = {
+        'tickets_by_status': list(tickets_by_status),
+        'tickets_by_priority': list(tickets_by_priority),
+        'tickets_by_type': list(tickets_by_type),
+    }
+    return render(request, 'appli_ticketing/dashboard.html', context)
