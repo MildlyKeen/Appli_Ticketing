@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}IT Ticketing System{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,6 +138,39 @@
         /* Small utility polish */
         .rounded-xl { border-radius: 1rem; }
         .shadow-soft { box-shadow: var(--shadow); }
+
+        /* Custom styles for tables from the original CSS */
+        .table thead th {
+            border-bottom: 1px solid #353535 !important;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #212121 !important;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #1b1b1b !important;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #2e2e2e !important;
+        }
+        .table th, .table td {
+            border-color: #353535 !important;
+        }
+        .table .badge {
+            color: #fff !important;
+        }
+        .table .badge.bg-info {
+            background-color: #0ea5e9 !important;
+        }
+        .table .badge.bg-success {
+            background-color: #16a34a !important;
+        }
+        .table .badge.bg-warning {
+            background-color: #f59e0b !important;
+        }
+        .table .btn-outline-primary {
+            color: #81d4fa !important;
+            border-color: #81d4fa !important;
+        }
     </style>
 </head>
 
@@ -188,7 +222,6 @@
     </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
     </div>
-    <!-- Script was moved here to ensure the body content exists before the script runs. -->
     <script>
         // Apply saved or system theme at load
         (function initTheme(){

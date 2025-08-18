@@ -41,6 +41,16 @@
         </div>
     </div>
 </div>
+<div class="col-md-12 mb-4">
+    <div class="card shadow-sm h-100">
+        <div class="card-header bg-primary text-white">
+            <h5 class="my-0"><i class="fa-solid fa-people-group me-2"></i> Tickets par groupe</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="groupChart"></canvas>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -151,6 +161,37 @@
             }
         }
     });
+    
+
+    const groupData = {{ tickets_by_group|safe }};
+
+    new Chart(document.getElementById('groupChart'), {
+        type: 'bar',
+        data: {
+            labels: groupData.map(g => g.name),
+            datasets: [{
+                label: 'Nombre de tickets',
+                data: groupData.map(g => g.count),
+                backgroundColor: '#36A2EB',
+                borderColor: '#36A2EB',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            }
+        }
+    });
+
 </script>
 
 {% endblock %}

@@ -1,33 +1,68 @@
 {% extends "appli_ticketing/base.html" %}
-
 {% block title %}Liste des Tickets{% endblock %}
-
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0">Liste des Tickets</h1>
-    <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Créer un ticket</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="mb-0">Liste des Tickets</h1>
+  <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Créer un ticket</a>
 </div>
+{% if filtered_group %}
+  <div class="alert alert-info">
+    Affichage des tickets du groupe : <strong>{{ filtered_group }}</strong>
+  </div>
+{% endif %}
 <hr>
+
+<!-- Résumé par groupe -->
+{% if all_groups %}
+  <div class="mb-4">
+    <h2>Résumé par groupe</h2>
+    <table class="table table-bordered w-50">
+      <thead>
+        <tr>
+          <th>Groupe</th><th>Total</th><th>Ouverts</th><th>Résolus</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for g in all_groups %}
+          <tr>
+            <td>{{ g.name }}</td>
+            <td>{{ g.total }}</td>
+            <td>{{ g.open }}</td>
+            <td>{{ g.resolved }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+
+<!-- Table des tickets -->
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th>Titre</th>
-      <th>Groupe</th>
-      <th>Priorité</th>
-      <th>Status</th>
-      <th>Assigné à</th>
-      <th>Créé par</th>
-      <th>Actions</th>
+      <th>Titre</th><th>Groupe</th><th>Priorité</th><th>Statut</th><th>Assigné à</th><th>Créé par</th><th>Actions</th>
     </tr>
   </thead>
   <tbody>
     {% for ticket in tickets %}
       <tr>
         <td><a href="{% url 'tickets:ticket_detail' ticket.pk %}" class="fw-bold text-primary">{{ ticket.title }}</a></td>
-        <td>{% if ticket.group %}<span class="badge bg-info">{{ ticket.group.name }}</span>{% else %}<span class="text-muted">Aucun</span>{% endif %}</td>
-        <td><span class="badge bg-warning">{{ ticket.priority }}</span></td>
-        <td><span class="badge bg-info">{{ ticket.status }}</span></td>
-        <td>{% if ticket.assigned_to %}<span class="badge bg-success">{{ ticket.assigned_to.username }}</span>{% else %}<span class="text-muted">Non assigné</span>{% endif %}</td>
+        <td>
+          {% if ticket.group %}
+            <span class="badge bg-info">{{ ticket.group.name }}</span>
+          {% else %}
+            <span class="text-muted">Aucun</span>
+          {% endif %}
+        </td>
+        <td><span class="badge bg-warning">{{ ticket.get_priority_display }}</span></td>
+        <td><span class="badge bg-info">{{ ticket.get_status_display }}</span></td>
+        <td>
+          {% if ticket.assigned_to %}
+            <span class="badge bg-success">{{ ticket.assigned_to.username }}</span>
+          {% else %}
+            <span class="text-muted">Non assigné</span>
+          {% endif %}
+        </td>
         <td>{{ ticket.created_by.username }}</td>
         <td>
           {% if user == ticket.created_by or user.is_superuser %}
@@ -40,7 +75,9 @@
         </td>
       </tr>
     {% empty %}
-      <tr><td colspan="7" class="text-center">Aucun ticket trouvé.</td></tr>
+      <tr>
+        <td colspan="7" class="text-center">Aucun ticket trouvé.</td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>

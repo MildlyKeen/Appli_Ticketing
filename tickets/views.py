@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
-from django.db.models import Count
+from django.db import models
+from django.db.models import Count, Q
 from .models import Ticket, Group
 from .forms import TicketForm, TicketAssignForm
 from .forms_group import GroupForm

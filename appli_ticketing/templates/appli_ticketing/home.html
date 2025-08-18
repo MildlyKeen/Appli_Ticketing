@@ -4,31 +4,81 @@
 
 {% block content %}
 <div class="text-center py-5">
-    <h1 class="display-5 fw-bold mb-4">Bienvenue dans le système de gestion des tickets informatiques</h1>
-    <hr>
-    <table class="table table-bordered w-75 mx-auto mb-4">
-      <tbody>
-        <tr>
-          <th>Fonctionnalité</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td>Créer un ticket</td>
-          <td>Signalez un problème ou une demande informatique</td>
-        </tr>
-        <tr>
-          <td>Voir les tickets</td>
-          <td>Consultez et gérez tous les tickets ouverts</td>
-        </tr>
-        <tr>
-          <td>Tableau de bord</td>
-          <td>Accédez à votre profil et à vos tickets</td>
-        </tr>
-      </tbody>
-    </table>
-    <a href="/tickets/" class="btn btn-primary btn-lg me-2">Voir les Tickets</a>
+  <!-- Main Heading -->
+  <h1 class="display-4 fw-bold mb-4 text-success">Bienvenue dans le système de gestion des tickets informatiques</h1>
+
+  <!-- Introduction Text -->
+  <p class="lead mb-5 text-muted">
+    Notre plateforme vous permet de signaler, suivre et gérer les incidents et demandes informatiques de manière simple et efficace. Que vous soyez utilisateur ou membre du support, nous avons des outils adaptés pour vous.
+  </p>
+
+  <!-- Key Features Section -->
+  <div class="row justify-content-center g-4">
+    <!-- Feature 1: Créer un ticket -->
+    <div class="col-md-4">
+      <div class="p-4 bg-surface rounded-3 shadow-sm border border-light d-flex flex-column h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-success text-white p-2 rounded-circle me-3"><i class="fa fa-plus-circle fa-2x"></i></div>
+          <h5 class="fw-bold my-0">Créer un ticket</h5>
+        </div>
+        <p class="text-muted mb-4 flex-grow-1">Signalez un problème ou une demande informatique. Notre équipe s'occupera de votre demande dès que possible.</p>
+        <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success w-100 py-2 mt-auto">Créer un ticket</a>
+      </div>
+    </div>
+
+    <!-- Feature 2: Voir les tickets -->
+    <div class="col-md-4">
+      <div class="p-4 bg-surface rounded-3 shadow-sm border border-light d-flex flex-column h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-success text-white p-2 rounded-circle me-3"><i class="fa fa-eye fa-2x"></i></div>
+          <h5 class="fw-bold my-0">Voir les tickets</h5>
+        </div>
+        <p class="text-muted mb-4 flex-grow-1">Consultez tous les tickets existants, suivez leur statut et restez informé sur les progrès.</p>
+        <a href="{% url 'tickets:ticket_list' %}" class="btn btn-success w-100 py-2 mt-auto">Voir les tickets</a>
+      </div>
+    </div>
+
+    <!-- Feature 3: Tableau de bord -->
+    <div class="col-md-4">
+      <div class="p-4 bg-surface rounded-3 shadow-sm border border-light d-flex flex-column h-100">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-success text-white p-2 rounded-circle me-3"><i class="fa fa-chart-line fa-2x"></i></div>
+          <h5 class="fw-bold my-0">Tableau de bord</h5>
+        </div>
+        <p class="text-muted mb-4 flex-grow-1">Accédez à votre profil, gérez vos tickets et suivez les statistiques de performance.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-success w-100 py-2 mt-auto">Accéder au tableau de bord</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-5">
+    <a href="{% url 'tickets:ticket_list' %}" class="btn btn-lg btn-outline-success me-2 px-4 py-2">Voir les tickets</a>
     {% if not user.is_authenticated %}
-      <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">Connexion</a>
+      <a href="{% url 'login' %}" class="btn btn-lg btn-secondary px-4 py-2">Connexion</a>
     {% endif %}
+  </div>
+
+  <!-- Explore by Group Section -->
+  {% if groups %}
+    <hr class="my-5">
+    <h4 class="text-muted mb-3">Explorez les tickets par groupe :</h4>
+    <div class="d-flex flex-wrap justify-content-center">
+      {% for g in groups %}
+        <a href="{% url 'tickets:ticket_list' %}?group={{ g.name }}" class="btn btn-outline-secondary btn-sm m-2 px-3 py-2">
+          Tickets du groupe « {{ g.name }} »
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Optional Background Section -->
+  <div class="py-5 mt-5 bg-light rounded-3">
+    <div class="container text-center">
+      <h3 class="mb-4 text-dark">Gérez facilement vos incidents et demandes</h3>
+      <p class="lead mb-4 text-muted">Avec notre système intuitif, vous pouvez suivre le progrès de vos tickets en temps réel. Rejoignez-nous et améliorez la gestion de vos demandes informatiques.</p>
+      <a href="{% url 'tickets:ticket_create' %}" class="btn btn-lg btn-success">Créer un ticket maintenant</a>
+    </div>
+  </div>
 </div>
 {% endblock %}
