@@ -1,6 +1,6 @@
 # Appli_Ticketing
 
-A professional Django-based IT ticketing system for teams and organizations.
+Django-Based app for ticketing and reports with dashboards
 
 ## Features
 - User authentication (unique email, strong password policy)
@@ -35,22 +35,6 @@ A professional Django-based IT ticketing system for teams and organizations.
 
 ## CI/CD
 - Automated tests, linting, and migrations via GitHub Actions (`.github/workflows/django.yml`)
-
-## Fixes
-- Migration errors (model mismatch, recursive URL includes)
-- NoReverseMatch errors (namespaced URLs)
-- Blank/unstyled pages (Bootstrap, tables, separators)
-- Restrict group creation and ticket inclusion to admins
-- Show assigned user and group info in ticket views
-
-## To Do
-- Group management dashboard (view, edit, delete groups)
-- Ticket filtering by group/project
-- Bulk ticket assignment to groups
-- Email notifications for ticket updates
-- Advanced reporting and analytics
-- REST API for integration
-- Docker support for deployment
 
 ---
 
