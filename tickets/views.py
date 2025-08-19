@@ -6,6 +6,7 @@ from django.db.models import Count, Q
 from .models import Ticket, Group
 from .forms import TicketForm, TicketAssignForm
 from .forms_group import GroupForm
+from django.contrib import messages
 
 def is_staff_user(user):
     return user.is_staff or user.is_superuser
@@ -67,22 +68,36 @@ def ticket_delete(request, pk):
     return render(request, 'tickets/ticket_confirm_delete.html', {'ticket': ticket})
 
 @login_required
-@user_passes_test(is_staff_user)
 def ticket_assign(request, pk):
+    # Manual check for admin status
+    if not request.user.is_staff:
+        messages.error(request, "Seuls les administrateurs peuvent attribuer des tickets. 🚫")
+        return redirect('home')  # Redirect to the main homepage URL
+
+    # The rest of your view's logic for assigning a ticket
     ticket = get_object_or_404(Ticket, pk=pk)
     form = TicketAssignForm(request.POST or None, instance=ticket)
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.success(request, "Le ticket a été attribué avec succès. ✅")
         return redirect('tickets:ticket_detail', pk=ticket.pk)
+    
     return render(request, 'tickets/ticket_assign.html', {'form': form, 'ticket': ticket})
 
 @login_required
-@user_passes_test(is_staff_user)
 def group_create(request):
+    # Manual check for admin status
+    if not request.user.is_staff:
+        messages.error(request, "Seuls les administrateurs peuvent créer des groupes.")
+        return redirect('home')  # Redirect to the main homepage URL
+
+    # The rest of your view's logic for creating a group
     form = GroupForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.success(request, "Le groupe a été créé avec succès.")
         return redirect('tickets:ticket_create')
+    
     return render(request, 'tickets/group_form.html', {'form': form})
 
 @login_required

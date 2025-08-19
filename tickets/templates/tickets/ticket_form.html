@@ -3,55 +3,56 @@
 {% block title %}Créer / Modifier un Ticket{% endblock %}
 
 {% block content %}
-<div class="card shadow-soft mb-4">
-    <div class="card-header bg-primary text-white p-4">
-        <h3 class="mb-0 fs-4 fw-bold">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h3>
-    </div>
-    <div class="card-body p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold my-0">Informations sur le ticket</h5>
-            <a href="{% url 'tickets:group_create' %}" class="btn btn-sm btn-outline-primary shadow-soft rounded-pill">
-                <i class="fa fa-plus-circle me-1"></i> Créer un nouveau groupe
-            </a>
-        </div>
-        <hr>
-        {% if form.errors %}
-            <div class="alert alert-danger rounded-xl shadow-sm">
-                <ul class="list-unstyled mb-0">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        <form method="post" novalidate>
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="row mb-3 align-items-center">
-                    <label for="{{ field.id_for_label }}" class="col-sm-3 col-form-label fw-bold">{{ field.label }}</label>
-                    <div class="col-sm-9">
-                        {{ field }}
-                        {% if field.help_text %}
-                            <small class="form-text text-muted">{{ field.help_text }}</small>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-            <hr class="my-4">
-            <div class="d-flex justify-content-end">
-                <a href="{% url 'tickets:ticket_list' %}" class="btn btn-outline-secondary me-2">
-                    <i class="fa fa-arrow-left me-1"></i> Retour à la liste
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-soft mb-4 rounded-4">
+            <div class="card-header bg-primary text-white p-4 d-flex justify-content-between align-items-center">
+                <h3 class="mb-0 fs-4 fw-bold">{% if edit %}Modifier{% else %}Créer{% endif %} un Ticket</h3>
+                <a href="{% url 'tickets:group_create' %}" class="btn btn-sm btn-light text-primary shadow-sm rounded-pill">
+                    <i class="fa fa-plus-circle me-1"></i> Créer un nouveau groupe
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-paper-plane me-1"></i> {% if edit %}Enregistrer{% else %}Envoyer{% endif %}
-                </button>
             </div>
-        </form>
+            <div class="card-body p-4">
+                {% if form.errors %}
+                    <div class="alert alert-danger rounded-xl shadow-sm mb-4" role="alert">
+                        <h5 class="alert-heading fw-bold"><i class="fa fa-exclamation-triangle me-2"></i> Erreurs de formulaire</h5>
+                        <ul class="list-unstyled mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="row mb-3 align-items-start">
+                            <label for="{{ field.id_for_label }}" class="col-sm-4 col-md-3 col-form-label fw-bold">{{ field.label }}</label>
+                            <div class="col-sm-8 col-md-9">
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <hr class="my-4">
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'tickets:ticket_list' %}" class="btn btn-outline-secondary me-2 px-4 rounded-pill">
+                            <i class="fa fa-arrow-left me-1"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4 rounded-pill">
+                            <i class="fa fa-paper-plane me-1"></i> {% if edit %}Enregistrer{% else %}Envoyer{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
