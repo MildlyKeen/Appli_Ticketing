@@ -128,6 +128,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Session settings for security and timeout
 SESSION_COOKIE_AGE = 600  # 10 minutes
+SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/tickets/'
