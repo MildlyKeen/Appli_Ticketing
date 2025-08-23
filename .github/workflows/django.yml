@@ -47,4 +47,4 @@ jobs:
         python manage.py test
     - name: Check production settings
       run: |
-        python manage.py check --deploy --settings=appli_ticketing.settings.production
+        python manage.py check --deploy --settings=appli_ticketing.settings
