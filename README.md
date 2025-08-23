@@ -9,7 +9,7 @@ Django-Based app for ticketing and reports with dashboards
 - Dashboard and reporting
 - Responsive, modern UI (Bootstrap, Google Fonts)
 - Secure coding practices
-- Session management (5 min inactivity, expires on browser close)
+- Session management (10 min inactivity, expires on browser close)
 - Admin-only group creation and ticket inclusion
 - Error handling and validation feedback
 
